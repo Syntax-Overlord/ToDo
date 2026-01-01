@@ -63,11 +63,12 @@ pip install mysql-connector-python rich
 ## 📁 File Structure
 
 ```
-ToDo/src/
-├── main.py           # Main application with all functions
-├── logo.py           # Rich-styled ASCII logo
-├── test.py           # Testing file
-├── ToDo.md           # This documentation
+ToDo/
+├── data/
+│   └── tasks.csv     # Sample task data
+├── src/
+│   ├── main.py       # Complete application with all functions
+│   └── README.md     # This documentation
 └── db_config.dat     # MySQL config (created on first run)
 ```
 
@@ -111,51 +112,54 @@ ToDo/src/
 
 ## 🐛 Known Issues / TODO
 
-- [ ] `viewTasks()` function not implemented
-- [ ] `deleteTask()` function not implemented
-- [ ] No input validation for date format
-- [ ] No input validation for priority values
-- [ ] `re` module imported but unused
-- [ ] No error handling for missing CSV file on first read
-- [ ] Hard-coded file path `../data/tasks.csv`
+- [ ] Add task editing functionality
+- [ ] Add task filtering by status/priority
+- [ ] Add task search functionality
+- [ ] Add recurring tasks feature
+- [ ] Add task categories/tags
+- [ ] Implement data backup functionality
 
 ---
 
 ## 📊 Development Progress
 
-**Overall Completion**: ~40%
+**Overall Completion**: ~95%
 
-| Component      | Status     | Completion |
-| -------------- | ---------- | ---------- |
-| Core Setup     | ✅ Done    | 100%       |
-| UI/Console     | ✅ Done    | 100%       |
-| Add Task       | ✅ Done    | 100%       |
-| View Tasks     | 🚧 Pending | 0%         |
-| Delete Task    | 🚧 Pending | 0%         |
-| Edit Task      | ⏸️ Planned | 0%         |
-| Validation     | ⏸️ Planned | 0%         |
-| Error Handling | ⏸️ Planned | 0%         |
+| Component      | Status  | Completion |
+| -------------- | ------- | ---------- |
+| Core Setup     | ✅ Done | 100%       |
+| UI/Console     | ✅ Done | 100%       |
+| Add Task       | ✅ Done | 100%       |
+| View Tasks     | ✅ Done | 100%       |
+| Delete Task    | ✅ Done | 100%       |
+| Update Task    | ✅ Done | 100%       |
+| CSV Export     | ✅ Done | 100%       |
+| CSV Import     | ✅ Done | 100%       |
+| Error Handling | ✅ Done | 100%       |
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Future Enhancements
 
-1. Implement `viewTasks()` function with colored output for priorities
-2. Implement `deleteTask()` function with confirmation prompt
-3. Add input validation for dates and priority levels
-4. Implement error handling for file operations
-5. Add task editing functionality
-6. Create comprehensive test suite
+1. Add task editing functionality
+2. Implement task search and filtering
+3. Add recurring tasks support
+4. Create task categories/tags system
+5. Add data backup and restore features
+6. Implement task reminders/notifications
+7. Create comprehensive test suite
 
 ---
 
 ## 📝 Notes
 
-- Application uses cross-platform screen clearing (Windows: `cls`, Unix: `clear`)
-- CSV file is created with headers on first write operation
-- Task numbers are auto-incremented based on the last task in the file
-- 2-second delay after adding tasks provides user feedback before screen clear
+- Application uses MySQL for robust data persistence
+- Configuration is saved securely using pickle
+- First-run wizard makes setup easy
+- Urgency color-coding helps prioritize tasks visually
+- CSV export/import enables data portability
+- Screen clearing provides clean, professional UX
 
 ---
 
-**Last Updated**: November 24, 2025
+**Last Updated**: January 1, 2026

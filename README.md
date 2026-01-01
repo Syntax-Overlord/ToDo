@@ -67,8 +67,8 @@ ToDo/
 ├── data/
 │   └── tasks.csv     # Sample task data
 ├── src/
-│   ├── main.py       # Complete application with all functions
-│   └── README.md     # This documentation
+│   └── main.py       # Complete application with all functions
+├── README.md         # This documentation
 └── db_config.dat     # MySQL config (created on first run)
 ```
 

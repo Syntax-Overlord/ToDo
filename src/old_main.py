@@ -8,8 +8,11 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
 from rich import box
+
 console = Console()
 CONFIG_FILE = "db_config.dat"
+
+
 def display_logo():
     """Display colorful ASCII logo for ToDo CLI."""
     logo = """████████╗ ██████╗ ██████╗  ██████╗     ██╗     ██╗███████╗████████╗
@@ -28,16 +31,22 @@ def display_logo():
     tagline = Text("✨ Organize Your Life, One Task at a Time ✨", style="bold yellow")
     console.print(tagline, justify="center")
     console.print()
+
+
 def save_config(config):
     """Save MySQL configuration to file using pickle."""
     with open(CONFIG_FILE, "wb") as f:
         pickle.dump(config, f)
+
+
 def load_config():
     """Load MySQL configuration from file."""
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, "rb") as f:
             return pickle.load(f)
     return None
+
+
 def get_mysql_details():
     """Get MySQL connection details from user."""
     console.print("\n[bold cyan]MySQL Configuration[/bold cyan]")
@@ -48,6 +57,8 @@ def get_mysql_details():
     config = [host, user, password, database]
     save_config(config)
     return config
+
+
 def connect_db(config):
     """Connect to MySQL database."""
     try:
@@ -65,20 +76,22 @@ def connect_db(config):
     except mysql.connector.Error as e:
         console.print("[bold red]Error connecting to MySQL: {}[/bold red]".format(e))
         return None
+
+
 def create_table(conn):
     """Create tasks table if not exists."""
     cursor = conn.cursor()
-    cursor.execute(
-        """CREATE TABLE IF NOT EXISTS tasks (
+    cursor.execute("""CREATE TABLE IF NOT EXISTS tasks (
             id INT AUTO_INCREMENT PRIMARY KEY,
             task VARCHAR(255) NOT NULL,
             description TEXT,
             due_date DATETIME,
             status VARCHAR(20) DEFAULT 'pending',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"""
-    )
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
     conn.commit()
     cursor.close()
+
+
 def add_task(conn):
     """Add a new task to database."""
     console.print("\n[bold green]Add New Task[/bold green]")
@@ -99,6 +112,8 @@ def add_task(conn):
         console.print("[bold red]Invalid date format![/bold red]")
     except mysql.connector.Error as e:
         console.print("[bold red]Error: {}[/bold red]".format(e))
+
+
 def view_tasks(conn):
     """View all tasks with urgency highlighting."""
     cursor = conn.cursor()
@@ -146,6 +161,8 @@ def view_tasks(conn):
             "{}{}[/]".format(status_color, status),
         )
     console.print(table)
+
+
 def update_task(conn):
     """Update task status."""
     view_tasks(conn)
@@ -158,6 +175,8 @@ def update_task(conn):
         console.print("[bold green]Task marked as completed![/bold green]")
     else:
         console.print("[bold red]Task not found![/bold red]")
+
+
 def delete_task(conn):
     """Delete a task."""
     view_tasks(conn)
@@ -170,6 +189,8 @@ def delete_task(conn):
         console.print("[bold green]Task deleted successfully![/bold green]")
     else:
         console.print("[bold red]Task not found![/bold red]")
+
+
 def export_to_csv(conn):
     """Export all tasks to CSV file."""
     cursor = conn.cursor()
@@ -186,6 +207,8 @@ def export_to_csv(conn):
         )
         writer.writerows(tasks)
     console.print("[bold green]Data exported to {}![/bold green]".format(filename))
+
+
 def import_from_csv(conn):
     """Import tasks from CSV file."""
     filename = input("Enter CSV filename: ")
@@ -208,12 +231,16 @@ def import_from_csv(conn):
         console.print("[bold green]Data imported successfully![/bold green]")
     except Exception as e:
         console.print("[bold red]Error importing data: {}[/bold red]".format(e))
+
+
 def change_mysql_details():
     """Change MySQL connection details."""
     if os.path.exists(CONFIG_FILE):
         os.remove(CONFIG_FILE)
     console.print("[yellow]Configuration deleted. Please enter new details.[/yellow]")
     return get_mysql_details()
+
+
 def display_menu():
     """Display main menu."""
     menu = Panel(
@@ -230,6 +257,8 @@ def display_menu():
         box=box.DOUBLE,
     )
     console.print(menu)
+
+
 def main():
     """Main function to run the ToDo CLI application."""
     display_logo()
@@ -276,4 +305,6 @@ def main():
         input("\nPress Enter to continue...")
         console.clear()
         display_logo()
+
+
 main()

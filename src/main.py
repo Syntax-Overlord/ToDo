@@ -5,7 +5,7 @@ from ascii_art import logo
 from widgets import Login
 
 
-class UI(App):
+class ToDo(App):
 
     CSS_PATH = "../styles/styles.tcss"
     BINDINGS = [
@@ -28,5 +28,5 @@ class UI(App):
 
 
 if __name__ == "__main__":
-    app = UI()
+    app = ToDo()
     app.run()

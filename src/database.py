@@ -3,10 +3,10 @@ import sqlite3
 
 class Database:
 
-    def __init__(self, db_name: str):
+    def __init__(self):
         self.active_table = None
 
-        self.conn = sqlite3.connect(db_name)
+        self.conn = sqlite3.connect("../data/database.db")
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
 

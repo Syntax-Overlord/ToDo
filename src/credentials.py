@@ -5,7 +5,7 @@ class Credential:
 
     def __init__(self):
         """TODO"""
-        self.conn = sqlite3.connect("credentials.db")
+        self.conn = sqlite3.connect("../data/credentials.db")
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
         self.table_name = self.table()

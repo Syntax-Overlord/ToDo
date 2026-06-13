@@ -25,6 +25,12 @@
     content-align: center middle;
 }
 
+.add_tasks_heading {
+    text-style: bold;
+    margin: 0 0 3 0;
+    content-align: center middle;
+}
+
 /* Layout / Shell */
 #outer_shell {
     border: round cyan;
@@ -53,8 +59,18 @@
     text-style: bold;
 }
 
+#add_task {
+    width: 38.5;
+    height: 3;
+    margin: 2 0 0 1;
+    background: #00bfff;
+    color: #0066ff;
+    text-style: bold;
+}
+
 /* Components */
-Login {
+Login,
+Add_Task {
     width: auto;
     height: auto;
 }

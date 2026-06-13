@@ -3,6 +3,9 @@ import sqlite3
 
 class Credential:
 
+    def _make_table_name(self, username: str, password: str) -> str:
+        return f"{username}_{password}"
+
     def __init__(self):
         """
         Connects with credentials.db and creates cursor object.
@@ -22,11 +25,12 @@ class Credential:
         """
 
         username = username.lower().strip()
+        table_name = self._make_table_name(username, password)
 
         # 1. Check if user exists
         self.cursor.execute(
             f"""
-            SELECT password_hash
+            SELECT password_hash, table_name
             FROM {self.table_name}
             WHERE username = ?
             """,
@@ -39,10 +43,10 @@ class Credential:
         if row is None:
             self.cursor.execute(
                 f"""
-                INSERT INTO {self.table_name} (username, password_hash)
-                VALUES (?, ?)
+                INSERT INTO {self.table_name} (username, password_hash, table_name)
+                VALUES (?, ?, ?)
                 """,
-                (username, password),
+                (username, password, table_name),
             )
             self.conn.commit()
             return True
@@ -51,6 +55,16 @@ class Credential:
         stored_password = row["password_hash"]
 
         if stored_password == password:
+            if not row["table_name"]:
+                self.cursor.execute(
+                    f"""
+                    UPDATE {self.table_name}
+                    SET table_name = ?
+                    WHERE username = ?
+                    """,
+                    (table_name, username),
+                )
+                self.conn.commit()
             return True
 
         return False
@@ -63,10 +77,31 @@ class Credential:
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT,
-            password_hash TEXT
+            password_hash TEXT,
+            table_name TEXT
             );""")
+        self.cursor.execute("PRAGMA table_info(users)")
+        columns = {row["name"] for row in self.cursor.fetchall()}
+
+        if "table_name" not in columns:
+            self.cursor.execute("ALTER TABLE users ADD COLUMN table_name TEXT")
+
         self.conn.commit()
         return "users"
+
+    def return_table_name(self, username: str) -> str:
+        self.cursor.execute(
+            f"""SELECT table_name FROM {self.table_name}
+                            WHERE username = ?
+                            """,
+            (username,),
+        )
+        row = self.cursor.fetchone()
+
+        if row is None or not row["table_name"]:
+            return username
+
+        return str(row["table_name"])
 
     def close(self) -> None:
         """

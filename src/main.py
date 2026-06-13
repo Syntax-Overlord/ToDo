@@ -1,8 +1,9 @@
 from textual.app import App, ComposeResult
 from textual.containers import HorizontalGroup, Container
-from textual.widgets import Header, Footer, Static
+from textual.widgets import Header, Footer, Static, Button, Input
 from ascii_art import logo
 from widgets import Login, Add_Task
+from credentials import Credential
 
 
 class ToDo(App):
@@ -20,6 +21,23 @@ class ToDo(App):
         self.login = False
         self.username = None
         self.table = None
+        self.cred = Credential()
+
+    async def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+
+        if button_id == "sign_in":
+            username = self.query_one("#username", Input).value
+            password_ = self.query_one("#password", Input).value
+            credentials_matched = self.cred.verify_user_id(
+                username=username, password=password_
+            )
+            if credentials_matched:
+                self.username = username
+                self.table = self.cred.return_table_name(username)
+                self.login = True
+
+                await self.action_add_task()
 
     def compose(self) -> ComposeResult:
         yield Header()

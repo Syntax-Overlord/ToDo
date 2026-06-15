@@ -1,20 +1,26 @@
 import sqlite3
+from pathlib import Path
 
 
 class Credential:
-
-    def _make_table_name(self, username: str, password: str) -> str:
-        return f"{username}_{password}"
 
     def __init__(self):
         """
         Connects with credentials.db and creates cursor object.
         """
 
-        self.conn = sqlite3.connect("../data/credentials.db")
+        database_path = (
+            Path(__file__).resolve().parent.parent / "data" / "credentials.db"
+        )
+        database_path.parent.mkdir(parents=True, exist_ok=True)
+
+        self.conn = sqlite3.connect(database_path)
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
         self.table_name = self.table()
+
+    def _make_table_name(self, username: str, password: str) -> str:
+        return f"{username}_{password}"
 
     def verify_user_id(self, username: str, password: str) -> bool:
         """
@@ -90,6 +96,7 @@ class Credential:
         return "users"
 
     def return_table_name(self, username: str) -> str:
+        username = username.lower().strip()
         self.cursor.execute(
             f"""SELECT table_name FROM {self.table_name}
                             WHERE username = ?

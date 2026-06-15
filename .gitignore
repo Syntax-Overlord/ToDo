@@ -18,3 +18,4 @@ venv/
 # files
 styles_structured.tcss
 credentials.db
+database.db

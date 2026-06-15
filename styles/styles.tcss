@@ -43,8 +43,8 @@
 
 /* Main area */
 #main {
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
 
     align: center middle;
 }
@@ -70,9 +70,21 @@
 
 /* Components */
 Login,
-Add_Task {
+Add_Task,
+Complete_Task,
+Remove_Task {
     width: auto;
     height: auto;
+}
+
+View_Tasks {
+    width: 100%;
+    height: 100%;
+}
+
+View_Tasks DataTable {
+    width: 100%;
+    height: 1fr;
 }
 
 /* Form elements */

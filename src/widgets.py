@@ -7,7 +7,9 @@ from ascii_art import (
     sign_in,
     add_task,
     add_task_heading,
+    complete_task,
     complete_task_heading,
+    remove_task,
     remove_task_heading,
 )
 from database import Database
@@ -40,7 +42,6 @@ class Add_Task(VerticalScroll):
 
 class Complete_Task(VerticalScroll):
     def compose(self) -> ComposeResult:
-        # Using Rich Text objects ensures ASCII spacing handles correctly without overlap
         yield Static(complete_task_heading, classes="add_tasks_heading")
         yield Input(placeholder="Task ID (Numbers Only)", id="complete_task_id")
         yield Button("C O M P L E T E   T A S K", id="btn_execute_complete")

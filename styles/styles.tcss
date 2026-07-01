@@ -28,7 +28,8 @@
 
 .add_tasks_heading {
     text-style: bold;
-    height: 3;              /* Keeps container height locked at 3 terminal rows */
+    width: 52;               /* Wide enough for the longest heading art (Complete Task, 51 cols) so it never wraps */
+    height: 3;                /* Keeps container height locked at 3 terminal rows */
     margin: 1 0 4 0;        /* Extra bottom margins create spacing above inputs */
     content-align: center middle;
 }
@@ -71,6 +72,7 @@ Complete_Task,
 Remove_Task {
     width: auto;
     height: auto;
+    align: center middle;
 }
 
 View_Tasks {

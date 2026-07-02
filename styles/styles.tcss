@@ -57,9 +57,9 @@
 #add_task,
 #btn_execute_complete,
 #btn_execute_remove {
-    width: 38.5;
+    width: 38;
     height: 3;
-    margin: 2 0 0 1;
+    margin: 2 7 0 7;
     background: #00bfff;
     color: #0066ff;
     text-style: bold;
@@ -90,5 +90,5 @@ Input {
     width: 40;
     background: $boost;
 
-    margin: 1 0;
+    margin: 1 6;
 }

@@ -7,8 +7,8 @@ from credentials import Credential
 
 
 class ToDo(App):
-    CSS_PATH = "../styles/styles.tcss"
-    BINDINGS = [
+    CSS_PATH: str = "../styles/styles.tcss"
+    BINDINGS: list[tuple[str, str, str]] = [
         ("l", "login_logout", "Login/Logout"),
         ("v", "view_tasks", "Home Page"),
         ("a", "add_task", "Add Task"),
@@ -16,12 +16,12 @@ class ToDo(App):
         ("r", "remove_task", "Remove Task"),
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.login = False
-        self.username = None
-        self.table = None
-        self.cred = Credential()
+        self.login: bool = False
+        self.username: str | None = None
+        self.table: str | None = None
+        self.cred: Credential = Credential()
 
     async def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id

@@ -2,6 +2,7 @@ from textual.app import App, ComposeResult
 from textual.containers import VerticalScroll
 from textual.widgets import Static, Input, Button, DataTable
 from rich.text import Text
+from typing import Any
 from ascii_art import (
     login,
     sign_in,
@@ -101,8 +102,8 @@ class Remove_Task(VerticalScroll):
 class View_Tasks(VerticalScroll):
     def __init__(self, table_name: str):
         super().__init__()
-        self.database_connection = Database(table_name=table_name)
-        self._table_columns = []
+        self.database_connection: Database = Database(table_name=table_name)
+        self._table_columns: list[Any] = []
 
     def compose(self) -> ComposeResult:
         yield DataTable(show_row_labels=False)

@@ -1,12 +1,12 @@
 import sqlite3
 from pathlib import Path
-from typing import cast
+from typing import Any, cast
 
 
 class Database:
 
-    def __init__(self, table_name=None):
-        self.active_table = table_name
+    def __init__(self, table_name: str | None = None) -> None:
+        self.active_table: str | None = table_name
 
         database_path = Path(__file__).resolve().parent.parent / "data" / "database.db"
         database_path.parent.mkdir(parents=True, exist_ok=True)
@@ -18,19 +18,19 @@ class Database:
         if self.active_table:
             self._initialize_table()
 
-    def _require_table(self):
+    def _require_table(self) -> None:
         if not self.active_table:
             raise ValueError("No active table selected")
 
-    def _table(self):
+    def _table(self) -> str:
         self._require_table()
         return cast(str, self.active_table)
 
-    def _quoted_table(self):
+    def _quoted_table(self) -> str:
         table_name = self._table().replace('"', '""')
         return f'"{table_name}"'
 
-    def _initialize_table(self):
+    def _initialize_table(self) -> None:
         self._require_table()
         self.cursor.execute(f"""CREATE TABLE IF NOT EXISTS {self._quoted_table()} (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,24 +42,29 @@ class Database:
                     );""")
         self.conn.commit()
 
-    def __enter__(self):
+    def __enter__(self) -> "Database":
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: Any,
+    ) -> None:
         self.close()
 
-    def login(self, table_name: str):
+    def login(self, table_name: str) -> None:
         self.active_table = table_name
 
         self._initialize_table()
 
-    def logout(self):
+    def logout(self) -> None:
         self.active_table = None
 
-    def close(self):
+    def close(self) -> None:
         self.conn.close()
 
-    def get_tasks(self):
+    def get_tasks(self) -> list[list[Any]]:
         table_name = self._quoted_table()
 
         rows = self.cursor.execute(
@@ -74,7 +79,7 @@ class Database:
         task: str,
         description: str,
         due_date: str,
-    ):
+    ) -> None:
         table_name = self._quoted_table()
 
         self.cursor.execute(
@@ -87,14 +92,14 @@ class Database:
         )
         self.conn.commit()
 
-    def complete_task(self, task_id: int):
+    def complete_task(self, task_id: int) -> None:
         table_name = self._quoted_table()
         self.cursor.execute(
             f"UPDATE {table_name} SET status = ? WHERE id = ?", ("completed", task_id)
         )
         self.conn.commit()
 
-    def delete_task(self, task_id: int):
+    def delete_task(self, task_id: int) -> None:
         table_name = self._quoted_table()
         self.cursor.execute(f"DELETE FROM {table_name} WHERE id = ?", (task_id,))
         self.conn.commit()

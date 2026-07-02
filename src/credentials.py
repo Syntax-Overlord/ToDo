@@ -4,7 +4,7 @@ from pathlib import Path
 
 class Credential:
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Connects with credentials.db and creates cursor object.
         """
@@ -17,7 +17,7 @@ class Credential:
         self.conn = sqlite3.connect(database_path)
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
-        self.table_name = self.table()
+        self.table_name: str = self.table()
 
     def _make_table_name(self, username: str, password: str) -> str:
         return f"{username}_{password}"
